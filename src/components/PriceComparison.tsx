@@ -64,7 +64,7 @@ useEffect(() => {
 
     onClick={async () => {
       game && Navigation.NavigateToExternalWeb(
-        `https://steamdb.info/app/appid=${appId}/`
+        `https://steamdb.info/app/${appId}/`
       )
     }}
     

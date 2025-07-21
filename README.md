@@ -7,7 +7,7 @@ This plugin shows shows the lowest steam sale price for a game on the store page
 - **Lowest Price Display**: Automatically shows the historical lowest price on steam for a game, with data from IsThereAnyDeal, when on the game's store page.
 - **Direct Access**: Provides a direct link to launch the IsThereAnyDeal webpage for more details from the game's store page.
 
-This plugin is based on the original by JtdeGraaf. This version has been modified.
+This plugin is based on the IsThereAnyDeal-DeckyPlugin by JtdeGraaf (https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin). This version has been modified.
 
 ## Screenshots
 ![Untitled](https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin/assets/94895953/d93f78a2-b6a4-419f-902d-ade08e9eeb03)

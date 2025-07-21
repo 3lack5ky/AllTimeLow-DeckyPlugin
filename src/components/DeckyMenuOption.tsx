@@ -1,16 +1,14 @@
-import { DropdownItem, PanelSection, PanelSectionRow, ToggleField } from 'decky-frontend-lib'
+import { DropdownItem, PanelSection, PanelSectionRow} from 'decky-frontend-lib'
 import { useEffect, useState } from 'react'
 import { SETTINGS, Setting } from '../utils/Settings';
 import { countries } from '../models/Country';
 
 const DeckyMenuOption = () => {
-  const [allowVouchersInPrices, setAllowVouchersInPrices] = useState(SETTINGS.defaults.allowVouchersInPrices)
   const [country, setCountry] = useState(SETTINGS.defaults.country)
   const [fontSize, setFontSize] = useState(SETTINGS.defaults.fontSize)
   const [paddingBottom, setPaddingBottom] = useState(SETTINGS.defaults.paddingBottom)
 
   useEffect(() => {
-    SETTINGS.load(Setting.ALLOW_VOUCHERS_IN_PRICES).then(setAllowVouchersInPrices);
     SETTINGS.load(Setting.COUNTRY).then(setCountry)
     SETTINGS.load(Setting.FONTSIZE).then(setFontSize)
     SETTINGS.load(Setting.PADDING_BOTTOM).then(setPaddingBottom)
@@ -46,14 +44,6 @@ const DeckyMenuOption = () => {
                  countryOptions.find(countryOption => countryOption.data === option.data)?.value)}}
             ></DropdownItem>
           </PanelSectionRow>
-          <PanelSectionRow>
-            <ToggleField 
-              label="Allow vouchers in prices" 
-              checked={allowVouchersInPrices}
-              onChange={(checked) => {
-                SETTINGS.save(Setting.ALLOW_VOUCHERS_IN_PRICES, checked)
-              }}
-            /></PanelSectionRow>
         </PanelSection>
         <PanelSection title='Customization'>
           <DropdownItem 

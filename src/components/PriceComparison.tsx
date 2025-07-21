@@ -30,29 +30,31 @@ const PriceComparison = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if(appId){
-      isThereAnyDealService.getIsThereAnyDealGameFromSteamAppId(appId).then((game) => {
-        isThereAnyDealService.getBestDealForGameId(game.id).then((deal) => {
+useEffect(() => {
+  if (appId) {
+    isThereAnyDealService.getIsThereAnyDealGameFromSteamAppId(appId).then((game) => {
+      isThereAnyDealService.getBestDealForGameId(game.id).then((deal) => {
+        if (deal !== null) {
           const price = deal.price;
-          const store = deal.shop.name;
-
-          // Return the result
-          setLabel(`Lowest price on ${store}: ${price.currency} ${price.amount}`);
-          setIsVisible(true)
-        }).catch((error: Error) => {
-          setLabel(error.message)
-          setIsVisible(true)
-        })
-        setGame(game)
-      })
-      .catch((error: Error) => {
-        setLabel(error.message)
-        setIsVisible(true)
-      })
-    }
-    else setIsVisible(false)
-  }, [appId])
+          setLabel(`Lowest price on Steam: ${price.amount} ${price.currency}`);
+          setIsVisible(true);
+        } else {
+          setLabel(" ");
+          setIsVisible(true);
+        }
+      }).catch((error: Error) => {
+        setLabel(error.message);
+        setIsVisible(true);
+      });
+      setGame(game);
+    }).catch((error: Error) => {
+      setLabel(error.message);
+      setIsVisible(true);
+    });
+  } else {
+    setIsVisible(false);
+  }
+}, [appId]);
 
   
 
@@ -62,7 +64,7 @@ const PriceComparison = () => {
 
     onClick={async () => {
       game && Navigation.NavigateToExternalWeb(
-        `https://isthereanydeal.com/game/${game.slug}/info/`
+        `https://steamdb.info/app/appid=${appId}/`
       )
     }}
     

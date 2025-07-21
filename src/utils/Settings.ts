@@ -2,7 +2,6 @@ import { ServerAPI } from "decky-frontend-lib";
 import { CACHE } from "./Cache";
 
 export enum Setting {
-  ALLOW_VOUCHERS_IN_PRICES = "allowVouchersInPrices",
   COUNTRY = "country",
   FONTSIZE = "fontSize",
   PADDING_BOTTOM = "paddingBottom",
@@ -14,7 +13,6 @@ export let SETTINGS: Settings
 export class Settings {
   private readonly serverAPI: ServerAPI;
   public defaults: Record<Setting, any> = {
-    allowVouchersInPrices: false,
     country: "US",
     fontSize: 16,
     paddingBottom: 10,

@@ -15,4 +15,4 @@ This plugin is based on the IsThereAnyDeal-DeckyPlugin by JtdeGraaf (https://git
 
 ---
 
-![Untitled](https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin/assets/94895953/f745f3db-663a-4742-aed6-90e3b096e884)
+![20250721131214_1](https://github.com/user-attachments/assets/8c696544-b13d-4027-8c37-fe416cf2820f)

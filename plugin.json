@@ -1,10 +1,10 @@
 {
-  "name": "IsThereAnyDeal for Deck",
-  "author": "JtdeGraaf",
+  "name": "AllTimeLow for Deck",
+  "author": "JtdeGraaf and 3lacksky",
   "flags": [],
   "publish": {
-    "tags": ["IsThereAnyDeal", "GameDeals"],
-    "description": "Shows IsThereAnyDeal data on a game's store page",
+    "tags": ["IsThereAnyDeal", "GameDeals", "PriceHistory", "Price"],
+    "description": "Shows the lowest sale price for a game on the store page.",
     "image": "https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin/blob/0f771f48c10f7238d32e5b4af78c24f459e78805/assets/publish-image.png?raw=true"
   }
 }

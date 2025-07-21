@@ -10,7 +10,8 @@ This plugin shows the lowest steam sale price for a game on the store page.
 This plugin is based on the IsThereAnyDeal-DeckyPlugin by JtdeGraaf (https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin). This version has been modified.
 
 ## Screenshots
-![Untitled](https://github.com/JtdeGraaf/IsThereAnyDeal-DeckyPlugin/assets/94895953/d93f78a2-b6a4-419f-902d-ade08e9eeb03)
+
+![20250721105033_1](https://github.com/user-attachments/assets/a8b36ee4-a531-414f-9838-8492ac6fab9f)
 
 ---
 

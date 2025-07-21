@@ -18,12 +18,23 @@ interface ServerResponseResult {
     body: string
 }
 
+interface HistoryDeal {
+  timestamp: string;
+  shop: Shop;
+  deal: Deal;
+}
+
+interface Shop {
+  id: number;
+  name: string;
+}
+
 export let isThereAnyDealService: IsThereAnyDealService
 
 export class IsThereAnyDealService {
   private readonly serverAPI: ServerAPI;
   // I know this basically does nothing, but it makes me feel better
-  private readonly notWhatYouThinkItIs = "T1dabE4yUTRObVUxWldWaE9HUTJaVFF5TkRCbFpXVmpaR1UzWVdRME0yVTRNbVF3Wldaa01nPT0="
+  private readonly notWhatYouThinkItIs = "TTJNMllqWmxZbVkwWVdFeE1XSTBPREZqTlRJell6UmpZVFk0WW1RMVlUQmpZVFkzTURRek13PT0="
 
   constructor(serverAPI: ServerAPI) {
     this.serverAPI = serverAPI;
@@ -60,57 +71,42 @@ export class IsThereAnyDealService {
   }
 
 
-  public getBestDealForGameId = async (gameId: string): Promise<Deal> => { 
-    
-    const country: string = await SETTINGS.load(Setting.COUNTRY)
-    const allowVouchersInPrices = await SETTINGS.load(Setting.ALLOW_VOUCHERS_IN_PRICES)
-    
-    // Use the new gameId to fetch the best deal for it
+public getBestDealForGameId = async (gameId: string): Promise<Deal | null> => {
+  const country: string = await SETTINGS.load(Setting.COUNTRY);
+  //  const allowVouchersInPrices = await SETTINGS.load(Setting.ALLOW_VOUCHERS_IN_PRICES);
 
-    const serverResponseDeals: ServerResponse<ServerResponseResult> = 
-        await this.serverAPI.fetchNoCors<ServerResponseResult>(
-        `https://api.isthereanydeal.com/games/prices/v2?key=${atob(atob(this.notWhatYouThinkItIs))}&country=${country}&nondeals=true&vouchers=${allowVouchersInPrices}`,
+  // API-Aufruf zum history/v2 Endpoint, nur Steam-Shops
+  const serverResponseDeals: ServerResponse<ServerResponseResult> = 
+      await this.serverAPI.fetchNoCors<ServerResponseResult>(
+        `https://api.isthereanydeal.com/games/storelow/v2?key=${atob(atob(this.notWhatYouThinkItIs))}&country=${country}`,
         {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            //@ts-ignore
-            json: [gameId],
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          //@ts-ignore
+          json: [gameId],
         }
-    );
-    
+  );
 
-    if(!serverResponseDeals.success) throw new Error("IsThereAnyDeal is unavailable")
-    const dealResponse: DealResponse[] = JSON.parse(serverResponseDeals.result.body)
-    if(dealResponse.length <= 0  || dealResponse[0].deals.length <= 0 ) throw new Error("No deals found")
-    
-    // Initialize variables to track the lowest price deal
-    let lowestPrice = Infinity;
-    let lowestPriceDeal = null;
-    let steamDeal = null;
-    const STEAM_SHOP_ID = 61
+  if (!serverResponseDeals.success) throw new Error("IsThereAnyDeal is unavailable");
 
-    // Iterate over all deals to find the one with the lowest price
-    for (const deal of dealResponse[0].deals) {
-        
-        if(deal.shop.id === STEAM_SHOP_ID){
-            steamDeal = deal
-        }
-        if (deal.price.amount < lowestPrice) {
-            lowestPrice = deal.price.amount;
-            lowestPriceDeal = deal;
-        }
-    }
-
-    // Check if a deal with the lowest price was found
-    if (!lowestPriceDeal) throw new Error("No deals found")
-    
-    // Check if the lowestPriceDeal is the same price as on Steam if so return the steamdeal
-    if(steamDeal && steamDeal.price.amount === lowestPriceDeal.price.amount) return steamDeal
-    return lowestPriceDeal
+  // JSON-Array parsen, das nur Steam-Deals enthält (wegen &shops=steam im URL)
+  const historyDeals: any = JSON.parse(serverResponseDeals.result.body)[0];
+  if (!historyDeals || !historyDeals.lows || historyDeals.lows.length === 0) {
+    return null; // Funktion beenden, wenn kein Deal gefunden wurde
   }
 
+  const steamDeal = historyDeals.lows.find((deal: any) => deal.shop && deal.shop.id === 61);
+  if (!steamDeal) throw new Error("No Steam deal found");
 
+  // niedrigsten Preis unter den Steam-Deals finden
+  let lowestPriceDeal = steamDeal;
+  for (const historyDeal of historyDeals.lows) {
+    if (historyDeal.shop.id === 61 && historyDeal.price.amount < lowestPriceDeal.price.amount) {
+      lowestPriceDeal = historyDeal;
+    }
+  }
+
+  return lowestPriceDeal as Deal;
 }
 
+}
